@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.miniproject.usermanagement.dto.UserDto;
 import com.miniproject.usermanagement.entity.User;
@@ -33,8 +34,8 @@ public class UserServiceImpl implements UserService {
     public UserDto createAccount(UserDto userDto) {
         User user = UserMapper.mapToUser(userDto);
 
-        List<User> userLists = userRepository.findByUserName(user.getUserName());
-        System.out.println(userLists.toString());
+        // List<User> userLists = userRepository.findByUserName(user.getUserName());
+        // System.out.println(userLists.toString());
         
         // check if username or email id already exists
         checkMultipleUsers(user);
@@ -139,5 +140,13 @@ public class UserServiceImpl implements UserService {
     public void deleteAccount(Long id){
         User user = userRepository.findById(id).orElseThrow(()-> new MultipleUsernameException("User doesn't exist!"));
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public String uploadImage(MultipartFile file){
+        String fileName = file.getOriginalFilename();
+        int dotIndex = fileName.lastIndexOf('.');
+        fileName = fileName.substring(0, dotIndex);  
+        return fileName;
     }
 }

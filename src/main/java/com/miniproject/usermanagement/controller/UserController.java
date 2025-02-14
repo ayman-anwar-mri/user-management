@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.miniproject.usermanagement.dto.UserDto;
 import com.miniproject.usermanagement.service.UserService;
@@ -29,7 +31,12 @@ public class UserController {
 
     // Add user REST API
     @PostMapping
-    public ResponseEntity<UserDto> addUser( @RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> addUser( @RequestParam("userName") String userName,
+                                            @RequestParam("gender") String gender,
+                                            @RequestParam("emailId") String emailId,
+                                            @RequestParam("file") MultipartFile file){
+        UserDto userDto = new UserDto(userName, gender, emailId,file);
+        System.out.println(userDto.getName());
         return new ResponseEntity<>(userService.createAccount(userDto),HttpStatus.CREATED);
     }
 

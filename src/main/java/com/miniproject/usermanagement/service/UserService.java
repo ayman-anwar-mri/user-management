@@ -3,6 +3,8 @@ package com.miniproject.usermanagement.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.miniproject.usermanagement.dto.UserDto;
 import com.miniproject.usermanagement.entity.User;
 
@@ -16,8 +18,6 @@ public interface UserService {
     void checkMultipleUsername(String userName);
     void checkMultipleEmail(String emailId);
     void deleteAccount(Long id);
-
-
-
+    String uploadImage(MultipartFile file);
 
 }
