@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,7 +46,7 @@ public class UserController {
     }
 
     // update name REST API
-    @PutMapping("/{id}/updateName")
+    @PutMapping("/{id}/update")
     public ResponseEntity<UserDto> updateUserDetails( @PathVariable Long id,
                                                @RequestBody  Map<String,String> requestBody){
         
@@ -53,6 +54,12 @@ public class UserController {
         return ResponseEntity.ok(userDto);
     }
 
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteAccount(@PathVariable Long id){
+        userService.deleteAccount(id);
+        return ResponseEntity.ok("User is deleted successfully!");
+    }
 
 }
 

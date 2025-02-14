@@ -1,6 +1,5 @@
 package com.miniproject.usermanagement.service.impl;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -134,5 +133,11 @@ public class UserServiceImpl implements UserService {
         if(userListsUsername.size()>=1){ 
             throw new MultipleUsernameException("Email id already exists!");
         }
+    }
+
+    @Override
+    public void deleteAccount(Long id){
+        User user = userRepository.findById(id).orElseThrow(()-> new MultipleUsernameException("User doesn't exist!"));
+        userRepository.deleteById(id);
     }
 }

@@ -15,6 +15,7 @@ public interface UserService {
     UserDto updateUser(Long id,Map<String,String> updateDetails);
     void checkMultipleUsername(String userName);
     void checkMultipleEmail(String emailId);
+    void deleteAccount(Long id);
 
 
 
