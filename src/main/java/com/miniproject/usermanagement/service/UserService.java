@@ -1,5 +1,6 @@
 package com.miniproject.usermanagement.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,6 @@ public interface UserService {
     void checkMultipleUsername(String userName);
     void checkMultipleEmail(String emailId);
     void deleteAccount(Long id);
-    String uploadImage(MultipartFile file);
+    String uploadImage(MultipartFile file) throws IOException;
 
 }

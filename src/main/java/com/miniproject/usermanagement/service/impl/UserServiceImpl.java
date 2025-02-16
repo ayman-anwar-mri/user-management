@@ -1,5 +1,9 @@
 package com.miniproject.usermanagement.service.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -33,9 +37,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createAccount(UserDto userDto) {
         User user = UserMapper.mapToUser(userDto);
-
-        // List<User> userLists = userRepository.findByUserName(user.getUserName());
-        // System.out.println(userLists.toString());
         
         // check if username or email id already exists
         checkMultipleUsers(user);
@@ -59,22 +60,13 @@ public class UserServiceImpl implements UserService {
         if(userListsEmailId.size()>=1){
             throw new MultipleUsernameException("Email id already exists!");
         }
-
-
-
     }
-
-    
 
     @Override
     public UserDto getAccountById(Long id){
         User user = userRepository.findById(id).orElseThrow(()-> new MultipleUsernameException("User doesn't exist!"));
         return UserMapper.mapToUserDto(user);
     }
-
-    
-    
-    
     
     @Override
     public List<UserDto> getAllAccounts(){
@@ -85,13 +77,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateUser(Long id, Map<String , String> updateDetails ){
         User user = userRepository.findById(id).orElseThrow(()-> new MultipleUsernameException("User doesn't exist!"));
-        Set updateFields = updateDetails.keySet();
+        Set updateFields = updateDetails.keySet(); // column fields
 
         Iterator value = updateFields.iterator();
 
         while(value.hasNext()){
-            String field =(String) value.next();
-            String fieldValue = updateDetails.get(field);
+            String field =(String) value.next(); // coulumn name
+            String fieldValue = updateDetails.get(field); // value to be updated 
             switch (field) {
                 case "name":
                     user.setName(fieldValue);
@@ -143,10 +135,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String uploadImage(MultipartFile file){
+    public String uploadImage(MultipartFile file) throws IOException{
         String fileName = file.getOriginalFilename();
+        String path = "images/";
+        String filePath = path + File.separator + fileName;
         int dotIndex = fileName.lastIndexOf('.');
         fileName = fileName.substring(0, dotIndex);  
+
+        File f = new File(path);
+        if(!f.exists()){
+            f.mkdir();
+        }
+
+        Files.copy(file.getInputStream(),Paths.get(filePath));
         return fileName;
     }
 }
